@@ -7,21 +7,35 @@
 //
 
 #import "ViewController.h"
-
+#import "STIndicatorView.h"
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet STIndicatorView *indicatorView;
 
 @end
 
 @implementation ViewController
 
+
+
+
+#pragma mark - lift cycle 生命周期
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    [self.indicatorView setViewMode:STIndicatorViewModePieDiagram];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - Delegate 视图委托
+
+#pragma mark - event response 事件相应
+
+- (IBAction)changedNum:(UISlider *)sender {
+    NSLog(@"%s, %f", __FUNCTION__, sender.value);
+    [self.indicatorView setProgress:sender.value];
 }
 
+#pragma mark - private methods 私有方法
+
+#pragma mark - getters and setters 属性
 @end
