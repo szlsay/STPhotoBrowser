@@ -18,6 +18,10 @@
 		779EAA5C1C47FE32001F3800 /* STUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA5B1C47FE32001F3800 /* STUI.m */; };
 		779EAA5F1C480136001F3800 /* STIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA5E1C480136001F3800 /* STIndicatorView.m */; };
 		779EAA631C480343001F3800 /* UIView+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA621C480343001F3800 /* UIView+ST.m */; };
+		77AE902E1C487FDB009C4C32 /* STPhotoBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AE902D1C487FDB009C4C32 /* STPhotoBrowserController.m */; };
+		77AE90311C488D53009C4C32 /* STPhotoBrowserView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AE90301C488D53009C4C32 /* STPhotoBrowserView.m */; };
+		77AE90341C48B319009C4C32 /* STPhotoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AE90331C48B319009C4C32 /* STPhotoItem.m */; };
+		77AE90371C48B370009C4C32 /* STImagesGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AE90361C48B370009C4C32 /* STImagesGroupView.m */; };
 		D92DCE8F7EE57C4723CD3539 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72FB5A1F2E03D14493C26929 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +49,14 @@
 		779EAA601C4801AD001F3800 /* STConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STConfig.h; sourceTree = "<group>"; };
 		779EAA611C480343001F3800 /* UIView+ST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ST.h"; sourceTree = "<group>"; };
 		779EAA621C480343001F3800 /* UIView+ST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ST.m"; sourceTree = "<group>"; };
+		77AE902C1C487FDB009C4C32 /* STPhotoBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPhotoBrowserController.h; sourceTree = "<group>"; };
+		77AE902D1C487FDB009C4C32 /* STPhotoBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPhotoBrowserController.m; sourceTree = "<group>"; };
+		77AE902F1C488D53009C4C32 /* STPhotoBrowserView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPhotoBrowserView.h; sourceTree = "<group>"; };
+		77AE90301C488D53009C4C32 /* STPhotoBrowserView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPhotoBrowserView.m; sourceTree = "<group>"; };
+		77AE90321C48B318009C4C32 /* STPhotoItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPhotoItem.h; sourceTree = "<group>"; };
+		77AE90331C48B319009C4C32 /* STPhotoItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPhotoItem.m; sourceTree = "<group>"; };
+		77AE90351C48B370009C4C32 /* STImagesGroupView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STImagesGroupView.h; sourceTree = "<group>"; };
+		77AE90361C48B370009C4C32 /* STImagesGroupView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STImagesGroupView.m; sourceTree = "<group>"; };
 		E99C00F96DCC46D182924116 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -141,8 +153,16 @@
 		779EAA531C47FD90001F3800 /* STPhotoBrowserView */ = {
 			isa = PBXGroup;
 			children = (
+				77AE902C1C487FDB009C4C32 /* STPhotoBrowserController.h */,
+				77AE902D1C487FDB009C4C32 /* STPhotoBrowserController.m */,
+				77AE902F1C488D53009C4C32 /* STPhotoBrowserView.h */,
+				77AE90301C488D53009C4C32 /* STPhotoBrowserView.m */,
 				779EAA5D1C480136001F3800 /* STIndicatorView.h */,
 				779EAA5E1C480136001F3800 /* STIndicatorView.m */,
+				77AE90321C48B318009C4C32 /* STPhotoItem.h */,
+				77AE90331C48B319009C4C32 /* STPhotoItem.m */,
+				77AE90351C48B370009C4C32 /* STImagesGroupView.h */,
+				77AE90361C48B370009C4C32 /* STImagesGroupView.m */,
 			);
 			name = STPhotoBrowserView;
 			path = STPhotoBrowser/STPhotoBrowserView;
@@ -271,13 +291,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				779EAA591C47FE0C001F3800 /* STConst.m in Sources */,
+				77AE902E1C487FDB009C4C32 /* STPhotoBrowserController.m in Sources */,
 				779EAA5F1C480136001F3800 /* STIndicatorView.m in Sources */,
+				77AE90311C488D53009C4C32 /* STPhotoBrowserView.m in Sources */,
+				77AE90341C48B319009C4C32 /* STPhotoItem.m in Sources */,
 				779EAA421C47FABE001F3800 /* ViewController.m in Sources */,
 				779EAA5C1C47FE32001F3800 /* STUI.m in Sources */,
 				779EAA631C480343001F3800 /* UIView+ST.m in Sources */,
 				779EAA3F1C47FABE001F3800 /* AppDelegate.m in Sources */,
 				779EAA561C47FDCC001F3800 /* STColor.m in Sources */,
 				779EAA3C1C47FABE001F3800 /* main.m in Sources */,
+				77AE90371C48B370009C4C32 /* STImagesGroupView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,3 +22,8 @@
  *  3.返回一个RGB格式的UIColor对象
  */
 #define RGB(r, g, b) RGBA(r, g, b, 1.0f)
+
+/**
+ *  4.弱引用
+ */
+#define STWeakSelf __weak typeof(self) weakSelf = self;

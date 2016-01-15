@@ -33,5 +33,10 @@ CGFloat const STStatusBarHeight = 20;
 CGFloat const STScaleMax = 2.0;
 
 /** 9.图片最小的缩放比例 */
-CGFloat const STScaleMin = 0.6;
+CGFloat const STScaleMin = 0.8;
 
+/** 10.是否允许横屏*/
+BOOL const STSupportLandscape = YES;
+
+/** 11.是否在横屏的时候充满宽度，，一般是在有长图需求的时候设置为YES*/
+BOOL const STFullWidthForLandScape = YES;

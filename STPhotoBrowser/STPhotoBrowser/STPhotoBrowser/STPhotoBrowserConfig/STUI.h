@@ -34,3 +34,9 @@ UIKIT_EXTERN CGFloat const STScaleMax;
 
 /** 9.图片最小的缩放比例 */
 UIKIT_EXTERN CGFloat const STScaleMin;
+
+/** 10.是否允许横屏*/
+UIKIT_EXTERN BOOL const STSupportLandscape;
+
+/** 11.是否在横屏的时候充满宽度，，一般是在有长图需求的时候设置为YES*/
+UIKIT_EXTERN BOOL const STFullWidthForLandScape;
