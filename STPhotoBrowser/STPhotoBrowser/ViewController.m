@@ -7,62 +7,230 @@
 //
 
 #import "ViewController.h"
-#import "STIndicatorView.h"
+
 #import "STPhotoBrowserController.h"
-#import "STImagesGroupView.h"
-#import "STPhotoItem.h"
+#import "STConfig.h"
+#import <UIButton+WebCache.h>
 @interface ViewController ()<STPhotoBrowserDelegate>
-@property (weak, nonatomic) IBOutlet STIndicatorView *indicatorView;
-@property (weak, nonatomic) IBOutlet STImagesGroupView *groupView;
 
-@property (nonatomic, strong, nullable)NSArray *arrayImage; //
+@property (nonatomic, strong, nullable)NSArray *arrayImageUrl; //
 
-
-
+@property (nonatomic, strong, nullable)UIScrollView *scrollView; //
 @end
 
 @implementation ViewController
-
-
-
 
 #pragma mark - lift cycle 生命周期
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.indicatorView setViewMode:STIndicatorViewModePieDiagram];
+    [self.view addSubview:self.scrollView];
     
-    NSMutableArray *arrayModel = [NSMutableArray array];
-    for (NSString *urlString in self.arrayImage) {
-        STPhotoItem *item = [STPhotoItem new];
-        item.thumbnail_pic = urlString;
-        [arrayModel addObject:item];
-    }
     
-    self.groupView.photoItemArray = arrayModel;
+    __block CGFloat buttonW = (ScreenWidth - STMargin * 3)/3;
+    __block CGFloat buttonH = buttonW;
+    __block CGFloat buttonX = 0;
+    __block CGFloat buttonY = 0;
+    [self.arrayImageUrl enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger idx, BOOL * _Nonnull stop) {
+        buttonX = STMargin + (idx % 3) * (buttonW + STMarginSmall);
+        buttonY = (idx / 3) * (buttonH + STMarginSmall);
+        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(buttonX,
+                                                                     buttonY,
+                                                                     buttonW,
+                                                                     buttonH)];
+        button.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        button.clipsToBounds = YES;
+        [button sd_setImageWithURL:[NSURL URLWithString:imageUrl]
+                          forState:UIControlStateNormal
+                  placeholderImage:[UIImage imageNamed:@"placeholderImage"]];
+        [button setTag:idx];
+        [button addTarget:self
+                   action:@selector(buttonClick:)
+         forControlEvents:UIControlEventTouchUpInside];
+        [self.scrollView addSubview:button];
+    }];
     
-
+    
+    [self.scrollView setContentSize:CGSizeMake(ScreenWidth,
+                                               (self.arrayImageUrl.count / 3 + 1)* (buttonH +
+                                                                                    STMarginSmall))];
 }
 
 #pragma mark - Delegate 视图委托
 
-#pragma mark - event response 事件相应
 
-- (IBAction)changedNum:(UISlider *)sender {
-    NSLog(@"%s, %f", __FUNCTION__, sender.value);
-    [self.indicatorView setProgress:sender.value];
+#pragma mark - photobrowser代理方法
+- (UIImage *)photoBrowser:(STPhotoBrowserController *)browser placeholderImageForIndex:(NSInteger)index
+{
+    return [self.scrollView.subviews[index] currentImage];
+}
+
+- (NSURL *)photoBrowser:(STPhotoBrowserController *)browser highQualityImageURLForIndex:(NSInteger)index
+{
+    NSString *urlStr = self.arrayImageUrl[index];
+    return [NSURL URLWithString:urlStr];
 }
 
 
+#pragma mark - event response 事件相应
 
+- (void)buttonClick:(UIButton *)button
+{
+    //启动图片浏览器
+    STPhotoBrowserController *browserVc = [[STPhotoBrowserController alloc] init];
+    browserVc.sourceImagesContainerView = self.scrollView; // 原图的父控件
+    browserVc.countImage = self.arrayImageUrl.count; // 图片总数
+    browserVc.currentIndex = (int)button.tag;
+    browserVc.delegate = self;
+    [browserVc show];
+}
 
 #pragma mark - private methods 私有方法
 
+
+
 #pragma mark - getters and setters 属性
 
-- (NSArray *)arrayImage
+- (UIScrollView *)scrollView
 {
-    return @[@"http://img3.3lian.com/2013/s1/20/d/57.jpg", @"https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=790098218,638143216&fm=21&gp=0.jpg"];
+    if (!_scrollView) {
+        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,
+                                                                    20,
+                                                                    ScreenWidth,
+                                                                    ScreenHeight - 20)];
+        [_scrollView setBackgroundColor:[UIColor redColor]];
+        [_scrollView setShowsHorizontalScrollIndicator:NO];
+        [_scrollView setShowsVerticalScrollIndicator:NO];
+    }
+    return _scrollView;
 }
+
+- (NSArray *)arrayImageUrl
+{
+    return @[@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg"];
+}
+
+
 @end

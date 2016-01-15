@@ -49,7 +49,7 @@
             //处理单击
             __weak __typeof(self)weakSelf = self;
             view.singleTapBlock = ^(UITapGestureRecognizer *recognizer){
-                __strong __typeof(weakSelf)strongSelf = weakSelf;
+                __strong __typeof(weakSelf) strongSelf = weakSelf;
                 [strongSelf hidePhotoBrowser:recognizer];
             };
     
@@ -173,9 +173,22 @@
     self.scrollView.contentSize = CGSizeMake(self.scrollView.subviews.count * self.scrollView.width,
                                              ScreenHeight);
     self.scrollView.contentOffset = CGPointMake(self.currentIndex * self.scrollView.width, 0);
-    self.labelIndex.bounds = CGRectMake(0, 0, 80, 30);
-    self.labelIndex.center = CGPointMake(ScreenWidth / 2, 30);
-    self.buttonSave.frame = CGRectMake(30, ScreenHeight - 70, 55, 30);
+    
+    
+    CGFloat indexW = 66;
+    CGFloat indexH = 28;
+    CGFloat indexCenterX = ScreenWidth / 2;
+    CGFloat indexCenterY = indexH / 2 + STMarginBig;
+    
+    self.labelIndex.bounds = CGRectMake(0, 0, indexW, indexH);
+    self.labelIndex.center = CGPointMake(indexCenterX, indexCenterY);
+    [self.labelIndex.layer setCornerRadius:indexH/2];
+    
+    CGFloat saveW = 40;
+    CGFloat saveH = 28;
+    CGFloat saveX = STMarginBig;
+    CGFloat saveY = ScreenHeight - saveH - STMarginBig;
+    self.buttonSave.frame = CGRectMake(saveX, saveY, saveW, saveH);
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
@@ -240,18 +253,18 @@
         }
     }
     
-    _scrollView.hidden = YES;
-    _indexLabel.hidden = YES;
-    _saveButton.hidden = YES;
+    self.scrollView.hidden = YES;
+    self.indexLabel.hidden = YES;
+    self.saveButton.hidden = YES;
     
     [UIView animateWithDuration:0.3 animations:^{
         tempImageView.frame = targetTemp;
     } completion:^(BOOL finished) {
-        _hasShowedPhotoBrowser = YES;
+        self.hasShowedPhotoBrowser = YES;
         [tempImageView removeFromSuperview];
-        _scrollView.hidden = NO;
-        _indexLabel.hidden = NO;
-        _saveButton.hidden = NO;
+        self.scrollView.hidden = NO;
+        self.indexLabel.hidden = NO;
+        self.saveButton.hidden = NO;
     }];
 }
 
@@ -390,18 +403,17 @@ didFinishSavingWithError:(NSError *)error
 - (UILabel *)labelIndex
 {
     if (!_labelIndex) {
-        CGFloat indexW = 100;
-        CGFloat indexH = 40;
-        CGFloat indexX = 100;
-        CGFloat indexY = 30;
-        _labelIndex = [[UILabel alloc]initWithFrame:CGRectMake(indexX, indexY, indexW, indexH)];
+        _labelIndex = [[UILabel alloc]init];
+        [_labelIndex setBackgroundColor:RGBA(0, 0, 0, 50.0/255)];
         [_labelIndex setTextAlignment:NSTextAlignmentCenter];
         [_labelIndex setTextColor:[UIColor whiteColor]];
-        [_labelIndex setFont:[UIFont systemFontOfSize:20]];
-        [_labelIndex setBackgroundColor:[UIColor redColor]];
-        [_labelIndex setClipsToBounds:YES];
-        [_labelIndex.layer setCornerRadius:indexH/2];
+        [_labelIndex setFont:[UIFont boldSystemFontOfSize:17]];
         
+        [_labelIndex setClipsToBounds:YES];
+        [_labelIndex.layer setBorderWidth:0.5];
+        [_labelIndex.layer setBorderColor:RGBA(255, 255, 255, 60.0/255).CGColor];
+        [_labelIndex setShadowOffset:CGSizeMake(0, -0.5)];
+        [_labelIndex setShadowColor:RGBA(0, 0, 0, 110.0/255)];
     }
     return _labelIndex;
 }
@@ -410,18 +422,19 @@ didFinishSavingWithError:(NSError *)error
 {
     if (!_buttonSave) {
         _buttonSave = [[UIButton alloc]init];
-        [_buttonSave setBackgroundColor:[UIColor blackColor]];
+        [_buttonSave setBackgroundColor:RGBA(0, 0, 0, 50.0/255)];
         [_buttonSave setTitle:@"保存" forState:UIControlStateNormal];
         [_buttonSave setTitleColor:[UIColor whiteColor]
                           forState:UIControlStateNormal];
+        [_buttonSave.titleLabel setFont:[UIFont systemFontOfSize:14]];
+        
         [_buttonSave setClipsToBounds:YES];
         [_buttonSave.layer setCornerRadius:2];
         [_buttonSave.layer setBorderWidth:0.5];
-        [_buttonSave.layer setBorderColor:[UIColor whiteColor].CGColor];
+        [_buttonSave.layer setBorderColor:RGBA(255, 255, 255, 60.0/255).CGColor];
         [_buttonSave addTarget:self
                         action:@selector(saveImage)
               forControlEvents:UIControlEventTouchUpInside];
-        
     }
     return _buttonSave;
 }

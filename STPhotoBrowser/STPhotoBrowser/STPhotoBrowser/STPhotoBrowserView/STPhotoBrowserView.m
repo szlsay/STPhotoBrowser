@@ -21,9 +21,6 @@
 @property (nonatomic, strong, nullable)UITapGestureRecognizer *tapDouble;
 @property (nonatomic, strong, nullable)NSURL *urlImage; //
 @property (nonatomic, assign)BOOL hasLoadedImage; //
-
-
-
 @end
 
 @implementation STPhotoBrowserView
@@ -94,7 +91,8 @@
 
 - (void)reloadImage
 {
-    [self setImageWithURL:self.urlImage placeholderImage:self.placeHolderImage];
+    [self setImageWithURL:self.urlImage
+         placeholderImage:self.placeHolderImage];
 }
 
 #pragma mark - private methods 私有方法
@@ -216,6 +214,8 @@
         [_scrollView setClipsToBounds:YES];
         [_scrollView setDelegate:self];
         [_scrollView addSubview:self.imageView];
+        [_scrollView setShowsHorizontalScrollIndicator:NO];
+        [_scrollView setShowsVerticalScrollIndicator:NO];
     }
     return _scrollView;
 }
