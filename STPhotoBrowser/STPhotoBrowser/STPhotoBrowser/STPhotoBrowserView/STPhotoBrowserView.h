@@ -15,8 +15,8 @@
 @property (nonatomic, assign)CGFloat progress;
 @property (nonatomic, assign)BOOL beginLoadingImage;
 //单击回调
-@property (nonatomic, strong) void (^singleTapBlock)(UITapGestureRecognizer *recognizer);
+@property (nonatomic, copy) void (^ _Nonnull singleTapBlock)(UITapGestureRecognizer * _Nonnull recognizer);
 
-- (void)setImageWithURL:(NSURL*)url
-       placeholderImage:(UIImage *)placeholderImage;
+- (void)setImageWithURL:(NSURL*_Nonnull)url
+       placeholderImage:(UIImage *_Nonnull)placeholderImage;
 @end

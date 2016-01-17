@@ -24,7 +24,7 @@
 @end
 
 @implementation STPhotoBrowserView
-#pragma mark - lift cycle 生命周期
+#pragma mark - --- lift cycle 生命周期 ---
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -44,14 +44,11 @@
     self.indicatorView.center = self.scrollView.center;
     self.scrollView.frame = self.bounds;
     self.buttonReload.center = CGPointMake(ScreenWidth/2, ScreenHeight/2);
+    self.imageView.center = CGPointMake(ScreenWidth/2, ScreenHeight/2);
     [self adjustFrame];
 }
 
-#pragma mark - Delegate 视图委托
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-}
+#pragma mark - --- Delegate 视图委托 ---
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
@@ -62,7 +59,7 @@
 {
     return self.imageView;
 }
-#pragma mark - event response 事件相应
+#pragma mark - --- event response 事件相应 ---
 
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer
 {
@@ -95,11 +92,13 @@
          placeholderImage:self.placeHolderImage];
 }
 
-#pragma mark - private methods 私有方法
+#pragma mark - --- private methods 私有方法 ---
 
 - (void)adjustFrame
 {
     CGRect frameScroll = self.scrollView.frame;
+    
+    
     
     if (self.imageView.image) {
         CGSize sizeImage = self.imageView.image.size;
@@ -225,6 +224,7 @@
     if (!_imageView) {
         _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
         [_imageView setUserInteractionEnabled:YES];
+        [_imageView setContentMode:UIViewContentModeScaleAspectFit];
     }
     return _imageView;
 }
@@ -244,7 +244,7 @@
     if (!_buttonReload) {
         _buttonReload = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 200, 40)];
         [_buttonReload setCenter:CGPointMake(ScreenWidth/2, ScreenHeight/2)];
-        [_buttonReload setBackgroundColor:[UIColor greenColor]];
+        [_buttonReload setBackgroundColor:RGB(240, 170, 170)];
         [_buttonReload setClipsToBounds:YES];
         [_buttonReload setTitle:@"原图加载失败，点击重新加载" forState:UIControlStateNormal];
         [_buttonReload setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

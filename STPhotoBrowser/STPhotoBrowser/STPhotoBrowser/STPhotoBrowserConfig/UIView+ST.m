@@ -196,5 +196,11 @@
 }
 
 
-
+- (UIView *)getParsentView:(UIView *)view
+{
+    if ([[view nextResponder] isKindOfClass:[UIViewController class]] || view == nil) {
+        return view;
+    }
+    return [self getParsentView:view.superview];
+}
 @end

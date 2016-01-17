@@ -14,5 +14,6 @@
 #import "STUI.h"
 
 #import "UIView+ST.h"
+#import "NSObject+ST.h"
 
 #endif /* STConfig_h */

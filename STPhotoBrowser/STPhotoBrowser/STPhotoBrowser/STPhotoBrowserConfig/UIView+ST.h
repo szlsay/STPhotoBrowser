@@ -69,5 +69,7 @@
  */
 @property (nonatomic) CGFloat right;
 
+
+- (UIView *)getParsentView:(UIView *)view;
 @end
 

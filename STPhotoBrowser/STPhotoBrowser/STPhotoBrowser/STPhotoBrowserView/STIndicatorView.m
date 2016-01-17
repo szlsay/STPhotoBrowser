@@ -55,7 +55,7 @@ static CGFloat const WidthIndicator = 42;
     switch (self.viewMode) {
         case STIndicatorViewModeLoopDiagram:
         {
-            CGContextSetLineWidth(content, 4);
+            CGContextSetLineWidth(content, 2);
             CGContextSetLineCap(content, kCGLineCapRound);
             CGFloat to = - M_PI * 0.5 + self.progress * M_PI * 2 + 0.05; // 初始值0.05
             CGFloat radius = MIN(rect.size.width, rect.size.height) * 0.5 - STMargin;
@@ -64,7 +64,7 @@ static CGFloat const WidthIndicator = 42;
             break;
         default:
         {
-            CGFloat radius = MIN(rect.size.width * 0.5, rect.size.height * 0.5) - STMargin;
+            CGFloat radius = MIN(rect.size.width * 0.5, rect.size.height * 0.5) - STMarginSmall;
             
             CGFloat contentW = radius * 2 + STMargin;
             CGFloat contentH = contentW;
@@ -73,7 +73,7 @@ static CGFloat const WidthIndicator = 42;
             CGContextAddEllipseInRect(content, CGRectMake(contentX, contentY, contentW, contentH));
             CGContextFillPath(content);
             
-            [[UIColor redColor] set];
+            [[UIColor lightGrayColor] set];
             CGContextMoveToPoint(content, centerX, centerY);
             CGContextAddLineToPoint(content, centerX, 0);
             CGFloat to = - M_PI * 0.5 + self.progress * M_PI * 2 + 0.001; // 初始值

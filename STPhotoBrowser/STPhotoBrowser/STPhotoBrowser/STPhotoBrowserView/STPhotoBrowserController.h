@@ -11,20 +11,20 @@
 @class STPhotoBrowserController;
 @protocol STPhotoBrowserDelegate <NSObject>
 
-- (UIImage *)photoBrowser:(STPhotoBrowserController *)browser
-    placeholderImageForIndex:(NSInteger)index;
+- (UIImage *_Nonnull)photoBrowser:(STPhotoBrowserController *_Nullable)browser
+          placeholderImageForIndex:(NSInteger)index;
 
-- (NSURL *)photoBrowser:(STPhotoBrowserController *)browser
-    highQualityImageURLForIndex:(NSInteger)index;
+- (NSURL *_Nullable)photoBrowser:(STPhotoBrowserController *_Nullable)browser
+     highQualityImageURLForIndex:(NSInteger)index;
 @end
 
 @interface STPhotoBrowserController : UIViewController
-
-@property (nonatomic, weak) UIView *sourceImagesContainerView;
-
-@property (nonatomic, assign) NSInteger currentIndex;
-
-@property (nonatomic, assign) NSInteger countImage;//图片总数
+/** 1.原图片的容器，即图片来源的父视图 */
+@property ( nonatomic, weak, nullable)UIView *sourceImagesContainerView;
+/** 2.当前的标签 */
+@property (nonatomic, assign)NSInteger currentIndex;
+/** 3.图片的总数目 */
+@property (nonatomic, assign)NSInteger countImage;
 
 @property ( nonatomic, weak, nullable) id <STPhotoBrowserDelegate>delegate; //
 
