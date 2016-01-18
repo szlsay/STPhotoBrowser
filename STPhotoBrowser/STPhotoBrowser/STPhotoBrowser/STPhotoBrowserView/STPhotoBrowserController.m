@@ -87,8 +87,6 @@
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    
-    NSLog(@"%s, %@", __FUNCTION__, self);
     [self setupFrame];
 }
 
@@ -266,41 +264,33 @@
         targetTemp.origin.y =  targetTemp.origin.y - tableview.contentOffset.y;
     }
     
-    CGFloat appWidth;
-    CGFloat appHeight;
-    if (ScreenWidth < ScreenHeight) {
-        appWidth = ScreenWidth;
-        appHeight = ScreenHeight;
-    } else {
-        appWidth = ScreenHeight;
-        appHeight = ScreenWidth;
-    }
-    
     UIImageView *tempImageView = [[UIImageView alloc] init];
     tempImageView.image = currentImageView.image;
     if (tempImageView.image) {
-        CGFloat tempImageSizeH = tempImageView.image.size.height;
-        CGFloat tempImageSizeW = tempImageView.image.size.width;
-        CGFloat tempImageViewH = (tempImageSizeH * appWidth)/tempImageSizeW;
-        if (tempImageViewH < appHeight) {
-            tempImageView.frame = CGRectMake(0, (appHeight - tempImageViewH)*0.5, appWidth, tempImageViewH);
-        } else {
-            tempImageView.frame = CGRectMake(0, 0, appWidth, tempImageViewH);
-        }
     } else {
         tempImageView.backgroundColor = [UIColor whiteColor];
-        tempImageView.frame = CGRectMake(0, (appHeight - appWidth)*0.5, appWidth, appWidth);
     }
+    
+    tempImageView.frame = currentImageView.frame;
     
     [self.view.window addSubview:tempImageView];
     
     [self dismissViewControllerAnimated:NO completion:nil];
-    [UIView animateWithDuration:0.3 animations:^{
-        tempImageView.frame = targetTemp;
-        
-    } completion:^(BOOL finished) {
-        [tempImageView removeFromSuperview];
-    }];
+    
+    [UIView animateWithDuration:0.3
+                          delay:0
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^{
+                         tempImageView.frame = targetTemp;
+                     } completion:^(BOOL finished) {
+                         [tempImageView removeFromSuperview];
+                     }];
+//    [UIView animateWithDuration:0.3 animations:^{
+//        tempImageView.frame = targetTemp;
+//        
+//    } completion:^(BOOL finished) {
+//        [tempImageView removeFromSuperview];
+//    }];
 }
 #pragma mark - --- private methods 私有方法 ---
 
