@@ -26,5 +26,5 @@ CGFloat const STScaleMin = 0.8;
 /** 6.是否允许横屏*/
 BOOL const STSupportLandscape = YES;
 
-/** 7.是否在横屏的时候充满宽度，，一般是在有长图需求的时候设置为YES*/
+/** 7.是否在横屏的时候充满宽度，，一般是在有长图需求的时候设置为YES(新浪微博的效果)*/
 BOOL const STFullWidthForLandScape = YES;

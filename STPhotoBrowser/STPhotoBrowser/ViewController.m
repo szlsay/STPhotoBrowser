@@ -43,7 +43,6 @@
                                                                      buttonH)];
         button.imageView.contentMode = UIViewContentModeScaleAspectFill;
         button.clipsToBounds = YES;
-        [button setBackgroundColor:[UIColor redColor]];
         [button sd_setImageWithURL:[NSURL URLWithString:imageUrl]
                           forState:UIControlStateNormal
                   placeholderImage:[UIImage imageNamed:@"placeholderImage"]];

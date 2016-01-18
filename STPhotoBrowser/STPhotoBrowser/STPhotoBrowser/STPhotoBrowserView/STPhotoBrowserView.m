@@ -49,9 +49,56 @@
     self.scrollView.frame     = self.bounds;
     self.indicatorView.center = self.scrollView.center;
     self.buttonReload.center  = self.scrollView.center;
-    self.imageView.frame      = self.scrollView.bounds;
+    
+    [self adjustFrame];
 }
 
+- (void)adjustFrame
+{
+    CGRect frame = self.scrollView.frame;
+    if (self.imageView.image) {
+        CGSize imageSize = self.imageView.image.size;//获得图片的size
+        CGRect imageFrame = CGRectMake(0,
+                                       0,
+                                       imageSize.width,
+                                       imageSize.height);
+        if (STFullWidthForLandScape){
+            CGFloat ratio = frame.size.width/imageFrame.size.width;
+            imageFrame.size.height = imageFrame.size.height*ratio;
+            imageFrame.size.width = frame.size.width;
+        } else{
+            if (frame.size.width<=frame.size.height) {//竖屏时候
+                CGFloat ratio = frame.size.width/imageFrame.size.width;
+                imageFrame.size.height = imageFrame.size.height*ratio;
+                imageFrame.size.width = frame.size.width;
+            }else{ //横屏的时候
+                CGFloat ratio = frame.size.height/imageFrame.size.height;
+                imageFrame.size.width = imageFrame.size.width*ratio;
+                imageFrame.size.height = frame.size.height;
+            }
+        }
+        
+        self.imageView.frame = imageFrame;
+        self.scrollView.contentSize = self.imageView.frame.size;
+        self.imageView.center = [self centerOfScrollViewContent:self.scrollView];
+        
+        //根据图片大小找到最大缩放等级，保证最大缩放时候，不会有黑边
+        CGFloat maxScale = frame.size.height/imageFrame.size.height;
+        maxScale = frame.size.width/imageFrame.size.width>maxScale?frame.size.width/imageFrame.size.width:maxScale;
+        //超过了设置的最大的才算数
+        maxScale = maxScale>STScaleMax?maxScale:STScaleMax;
+        //初始化
+        self.scrollView.minimumZoomScale = STScaleMin;
+        self.scrollView.maximumZoomScale = maxScale;
+        self.scrollView.zoomScale = 1.0f;
+    }else{
+        frame.origin = CGPointZero;
+        self.imageView.frame = frame;
+        //重置内容大小
+        self.scrollView.contentSize = self.imageView.frame.size;
+    }
+    self.scrollView.contentOffset = CGPointZero;
+}
 
 
 #pragma mark - --- Delegate 视图委托 ---

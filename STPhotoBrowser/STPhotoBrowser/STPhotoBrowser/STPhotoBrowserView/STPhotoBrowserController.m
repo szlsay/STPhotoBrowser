@@ -87,6 +87,8 @@
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
+    
+    NSLog(@"%s, %@", __FUNCTION__, self);
     [self setupFrame];
 }
 
@@ -98,6 +100,10 @@
     // 1.获取当前页数
     NSInteger pageCurrent = scrollView.contentOffset.x / scrollView.width + 0.5;
     
+    if (pageCurrent ==  self.countImage || pageCurrent < 0) {
+        return;
+    }
+    
     // 2.设置标题
     self.labelIndex.text = [NSString stringWithFormat:@"%ld/%ld", (long)(pageCurrent + 1), (long)self.countImage];
     
@@ -107,8 +113,18 @@
         for (STPhotoBrowserView *photoBrowserView in scrollView.subviews) {
             if (photoBrowserView != self.arrayPhotoBrowserView[self.currentPage]) {
                 photoBrowserView.scrollView.zoomScale = 1.0;
+                if (ScreenWidth > ScreenHeight) {
+                    photoBrowserView.imageView.origin = CGPointMake(0, 0);
+                }else {
                 photoBrowserView.imageView.center = photoBrowserView.scrollView.center;
+                } 
             }else {
+                if (ScreenWidth > ScreenHeight) {
+                    photoBrowserView.imageView.origin = CGPointMake(0, 0);
+                }else {
+                    photoBrowserView.imageView.center = photoBrowserView.scrollView.center;
+                }
+
                 if (photoBrowserView.isLoadedImage) {
                     [self.buttonSave setTitleColor:[UIColor whiteColor]
                                           forState:UIControlStateNormal];
