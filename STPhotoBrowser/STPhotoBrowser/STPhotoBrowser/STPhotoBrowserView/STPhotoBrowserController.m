@@ -21,10 +21,11 @@
 @property (nonatomic, strong, nullable)UIButton *buttonSave;
 /** 4.保存时候的指示器 */
 @property (nonatomic, strong, nullable)UIActivityIndicatorView *indicatorView;
+/** 5.图片视图数组 */
+@property (nonatomic, strong, nullable)NSMutableArray *arrayImage;
 
 @property (nonatomic,assign) BOOL hasShowedPhotoBrowser;
 
-@property (nonatomic, assign)NSInteger currentPage; //
 
 @end
 
@@ -41,35 +42,34 @@
     
     self.hasShowedPhotoBrowser = NO;
     
-    
-    if (self.countImage > 1) {
-        self.labelIndex.text = [NSString stringWithFormat:@"1/%ld", (long)self.countImage];
-    }
-    
+    // 2.添加图片
+    [self.arrayImage removeAllObjects];
     for (int i = 0; i < self.countImage; i++) {
-        STPhotoBrowserView *view = [[STPhotoBrowserView alloc] init];
-        view.imageView.tag = i;
+        STPhotoBrowserView *photoBrowserView = [STPhotoBrowserView new];
+        [self.arrayImage addObject:photoBrowserView.imageView];
+        //        view.imageView.tag = i;
         
         //处理单击
         __weak __typeof(self)weakSelf = self;
-        view.singleTapBlock = ^(UITapGestureRecognizer *recognizer){
+        photoBrowserView.singleTapBlock = ^(UITapGestureRecognizer *recognizer){
             __strong __typeof(weakSelf) strongSelf = weakSelf;
             [strongSelf hidePhotoBrowser:recognizer];
         };
         
-        [self.scrollView addSubview:view];
+        [self.scrollView addSubview:photoBrowserView];
     }
     [self.view addSubview:self.scrollView];
     
-    
-    
-    
-    
+    // 3.添加上方标题
+    if (self.countImage > 1) {
+        self.labelIndex.text = [NSString stringWithFormat:@"1/%ld", (long)self.countImage];
+    }
     [self.view addSubview:self.labelIndex];
+    // 4.添加保存按钮
     [self.view addSubview:self.buttonSave];
     
     
-    [self setupImageOfImageViewForIndex:self.currentIndex];
+    [self setupImageOfImageViewForIndex:self.currentPage];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -96,9 +96,24 @@
 #pragma mark - 1.scrollview代理方法
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    // 1.获取当前页数
     NSInteger pageCurrent = scrollView.contentOffset.x / scrollView.width + 0.5;
+    
+    // 2.设置标题
     self.labelIndex.text = [NSString stringWithFormat:@"%d/%ld", pageCurrent + 1, (long)self.countImage];
     
+    // 3.还原其他图片的尺寸
+    if (pageCurrent != self.currentPage) {
+        self.currentPage = pageCurrent;
+        for (STPhotoBrowserView *photoBrowserView in scrollView.subviews) {
+            if (photoBrowserView.imageView != self.arrayImage[self.currentPage]) {
+                photoBrowserView.scrollView.zoomScale = 1.0;
+                photoBrowserView.imageView.center = photoBrowserView.scrollView.center;
+            }
+        }
+    }
+    
+    // 4.预加载图片数据
     NSInteger left = pageCurrent - 2;
     NSInteger right = pageCurrent + 2;
     left = left > 0 ? left : 0;
@@ -107,18 +122,7 @@
     for (NSInteger i =  left; i < right; i++) {
         [self setupImageOfImageViewForIndex:i];
     }
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    NSInteger pageCurrent = scrollView.contentOffset.x / scrollView.width;
-    self.currentIndex = pageCurrent;
     
-    for (STPhotoBrowserView *view in scrollView.subviews) {
-        if (view.imageView.tag != pageCurrent) {
-            view.scrollView.zoomScale = 1.0;
-        }
-    }
 }
 
 #pragma mark - --- event response 事件相应 ---
@@ -131,8 +135,6 @@
                                    selector:@selector(changeButtonStatus)
                                    userInfo:nil
                                     repeats:NO];
-    
-    self.currentPage = self.scrollView.contentOffset.x / self.scrollView.bounds.size.width;
     
     STPhotoBrowserView *currentView = self.scrollView.subviews[self.currentPage];
     
@@ -169,7 +171,7 @@
 #pragma mark - 3.显示图片浏览器
 - (void)showPhotoBrowser
 {
-    UIView *sourceView = self.sourceImagesContainerView.subviews[self.currentIndex];
+    UIView *sourceView = self.sourceImagesContainerView.subviews[self.currentPage];
     UIView *parentView = [self.view getParsentView:sourceView];
     CGRect rect = [sourceView.superview convertRect:sourceView.frame toView:parentView];
     
@@ -181,7 +183,7 @@
     
     UIImageView *tempImageView = [[UIImageView alloc] init];
     tempImageView.frame = rect;
-    tempImageView.image = [self placeholderImageForIndex:self.currentIndex];
+    tempImageView.image = [self placeholderImageForIndex:self.currentPage];
     [self.view addSubview:tempImageView];
     tempImageView.contentMode = UIViewContentModeScaleAspectFit;
     
@@ -233,10 +235,10 @@
 #pragma mark - 4.单击隐藏图片浏览器
 - (void)hidePhotoBrowser:(UITapGestureRecognizer *)recognizer
 {
-    STPhotoBrowserView *view = (STPhotoBrowserView *)recognizer.view;
-    UIImageView *currentImageView = view.imageView;
+    STPhotoBrowserView *photoBrowserView = (STPhotoBrowserView *)recognizer.view;
+    UIImageView *currentImageView = photoBrowserView.imageView;
     
-    UIView *sourceView = self.sourceImagesContainerView.subviews[self.currentIndex];
+    UIView *sourceView = self.sourceImagesContainerView.subviews[self.currentPage];
     UIView *parentView = [self.view getParsentView:sourceView];
     CGRect targetTemp = [sourceView.superview convertRect:sourceView.frame toView:parentView];
     
@@ -336,7 +338,7 @@
     
     self.scrollView.contentSize = CGSizeMake(self.scrollView.subviews.count * self.scrollView.width,
                                              ScreenHeight);
-    self.scrollView.contentOffset = CGPointMake(self.currentIndex * self.scrollView.width, 0);
+    self.scrollView.contentOffset = CGPointMake(self.currentPage * self.scrollView.width, 0);
     
     
     CGFloat indexW = 66;
@@ -355,18 +357,18 @@
     self.buttonSave.frame = CGRectMake(saveX, saveY, saveW, saveH);
 }
 
-#pragma mark - 5.设置视图的图片
+#pragma mark - 5.加载视图的图片
 - (void)setupImageOfImageViewForIndex:(NSInteger)index
 {
-    STPhotoBrowserView *view = self.scrollView.subviews[index];
-    if (view.beginLoadingImage) return;
+    STPhotoBrowserView *photoBrowserView = self.scrollView.subviews[index];
+    if (photoBrowserView.beginLoadingImage) return;
     if ([self highQualityImageURLForIndex:index]) {
-        [view setImageWithURL:[self highQualityImageURLForIndex:index]
-             placeholderImage:[self placeholderImageForIndex:index]];
+        [photoBrowserView setImageWithURL:[self highQualityImageURLForIndex:index]
+                         placeholderImage:[self placeholderImageForIndex:index]];
     } else {
-        view.imageView.image = [self placeholderImageForIndex:index];
+        photoBrowserView.imageView.image = [self placeholderImageForIndex:index];
     }
-    view.beginLoadingImage = YES;
+    photoBrowserView.beginLoadingImage = YES;
 }
 
 #pragma mark - 6.获取低分辨率（占位）图片
@@ -381,13 +383,14 @@
 #pragma mark - 7.获取高分辨率图片url
 - (NSURL *)highQualityImageURLForIndex:(NSInteger)index
 {
+    //    self.currentPage = index;
     if ([self.delegate respondsToSelector:@selector(photoBrowser:highQualityImageURLForIndex:)]) {
         return [self.delegate photoBrowser:self highQualityImageURLForIndex:index];
     }
     return nil;
 }
 
-#pragma mark - --- getters and setters 属性 --- 
+#pragma mark - --- getters and setters 属性 ---
 
 #pragma mark - 1.内部容器视图
 - (UIScrollView *)scrollView
@@ -452,6 +455,15 @@
         [_indicatorView setBackgroundColor:[UIColor redColor]];
     }
     return _indicatorView;
+}
+
+#pragma mark - 5.图片视图数组
+- (NSMutableArray *)arrayImage
+{
+    if (!_arrayImage) {
+        _arrayImage = [NSMutableArray array];
+    }
+    return _arrayImage;
 }
 
 @end

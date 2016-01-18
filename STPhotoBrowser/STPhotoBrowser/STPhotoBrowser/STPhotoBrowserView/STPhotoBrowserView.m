@@ -41,15 +41,16 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.indicatorView.center = self.scrollView.center;
+    
     self.scrollView.frame = self.bounds;
-    self.buttonReload.center = CGPointMake(ScreenWidth/2, ScreenHeight/2);
-    self.imageView.center = CGPointMake(ScreenWidth/2, ScreenHeight/2);
-    [self adjustFrame];
+    self.indicatorView.center = self.scrollView.center;
+    self.buttonReload.center = self.scrollView.center;
+    self.imageView.center = self.scrollView.center;
 }
 
 #pragma mark - --- Delegate 视图委托 ---
 
+#pragma mark - 1.scrollView的委托
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     self.imageView.center = [self centerOfScrollViewContent:scrollView];
@@ -59,8 +60,22 @@
 {
     return self.imageView;
 }
-#pragma mark - --- event response 事件相应 ---
 
+#pragma mark - 2.双击的放大时，获取图片在中间的位置
+- (CGPoint)centerOfScrollViewContent:(UIScrollView *)scrollView
+{
+    CGFloat offsetX = (scrollView.width > scrollView.contentSize.width)?
+    (scrollView.width - scrollView.contentSize.width) * 0.5 : 0.0;
+    CGFloat offsetY = (scrollView.height > scrollView.contentSize.height)?
+    (scrollView.height - scrollView.contentSize.height) * 0.5 : 0.0;
+    CGPoint actualCenter = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
+                                       scrollView.contentSize.height * 0.5 + offsetY);
+    return actualCenter;
+}
+
+
+#pragma mark - --- event response 事件相应 ---
+#pragma mark - 1.单击事件
 - (void)handleSingleTap:(UITapGestureRecognizer *)recognizer
 {
     if (self.singleTapBlock) {
@@ -68,6 +83,7 @@
     }
 }
 
+#pragma mark - 2.双击事件
 - (void)handleDoubleTap:(UITapGestureRecognizer *)recognizer
 {
     // 1.如果没有图片，没有响应
@@ -77,15 +93,16 @@
     
     // 2.放大和缩小
     CGPoint touchPoint = [recognizer locationInView:self];
-    if (self.scrollView.zoomScale <= 1.0) {
-        CGFloat scaleX = touchPoint.x + self.scrollView.contentOffset.x;//需要放大的图片的X点
-        CGFloat sacleY = touchPoint.y + self.scrollView.contentOffset.y;//需要放大的图片的Y点
-        [self.scrollView zoomToRect:CGRectMake(scaleX, sacleY, 10, 10) animated:YES];
-    } else {
-        [self.scrollView setZoomScale:1.0 animated:YES]; //还原
+    if (self.scrollView.zoomScale <= 1.0) { // 1.放大
+        [self.scrollView zoomToRect:CGRectMake(touchPoint.x, touchPoint.y, 0, 0)
+                           animated:YES];
+    } else {                                // 2.还原
+        [self.scrollView setZoomScale:1.0
+                             animated:YES];
     }
 }
 
+#pragma mark - 3.重载图片
 - (void)reloadImage
 {
     [self setImageWithURL:self.urlImage
@@ -94,75 +111,7 @@
 
 #pragma mark - --- private methods 私有方法 ---
 
-- (void)adjustFrame
-{
-    CGRect frameScroll = self.scrollView.frame;
-    
-    
-    
-    if (self.imageView.image) {
-        CGSize sizeImage = self.imageView.image.size;
-        CGRect frameImage = CGRectMake(0, 0, sizeImage.width, sizeImage.height);
-        
-        if (STFullWidthForLandScape) {
-            CGFloat ratio = frameScroll.size.width / frameImage.size.width;
-            frameImage.size.height = frameImage.size.height * ratio;
-            frameImage.size.width = frameScroll.size.width;
-        }else {
-            if (frameScroll.size.width <= frameScroll.size.height) {
-                CGFloat ratio = frameScroll.size.width / frameImage.size.width;
-                frameImage.size.height = frameImage.size.height * ratio;
-                frameImage.size.width = frameScroll.size.width;
-            }else {
-                CGFloat ratio = frameScroll.size.height / frameImage.size.height;
-                frameImage.size.width = frameImage.size.width * ratio;
-                frameImage.size.height = frameScroll.size.height;
-            }
-        }
-        
-        
-        [self.imageView setFrame:frameImage];
-        [self.scrollView setContentSize:self.imageView.size];
-        [self.imageView setCenter:[self centerOfScrollViewContent:self.scrollView]];
-        
-        
-        CGFloat maxScale = frameScroll.size.height/frameImage.size.height;
-        
-        if ((frameScroll.size.width/frameImage.size.width) > maxScale) {
-            maxScale = frameScroll.size.width/frameImage.size.width;
-        }else {
-            maxScale = maxScale;
-        }
-        
-        if (maxScale > STScaleMax) {
-            maxScale = maxScale;
-        }else {
-            maxScale = STScaleMax;
-        }
-        
-        [self.scrollView setMinimumZoomScale:STScaleMin];
-        [self.scrollView setMaximumZoomScale:STScaleMax];
-        [self.scrollView setZoomScale:1.0f animated:YES];
-    }else{
-        
-        frameScroll.origin = CGPointZero;
-        self.imageView.frame = frameScroll;
-        self.scrollView.contentSize = self.imageView.frame.size;
-    }
-    self.scrollView.contentOffset = CGPointZero;
-}
-
-- (CGPoint)centerOfScrollViewContent:(UIScrollView *)scrollView
-{
-    CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?
-    (scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
-    CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?
-    (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
-    CGPoint actualCenter = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
-                                       scrollView.contentSize.height * 0.5 + offsetY);
-    return actualCenter;
-}
-
+#pragma mark - 1.设置图片Url和背景图
 - (void)setImageWithURL:(NSURL*)url placeholderImage:(UIImage *)placeholderImage
 {
     // 1.如果有点击载入按钮，需要移除
@@ -181,22 +130,22 @@
                                options:SDWebImageRetryFailed
                               progress:^(NSInteger receivedSize,
                                          NSInteger expectedSize) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        strongSelf.indicatorView.progress = (CGFloat)receivedSize / expectedSize;
-        
-    } completed:^(UIImage *image,
-                  NSError *error,
-                  SDImageCacheType cacheType,
-                  NSURL *imageURL) {
-        __strong typeof(weakSelf) strongSelf = weakSelf;
-        [strongSelf.indicatorView removeFromSuperview];
-        
-        if (error) {
-            [strongSelf addSubview:self.buttonReload];
-            return;
-        }
-        strongSelf.hasLoadedImage = YES;
-    }];
+                                  __strong typeof(weakSelf) strongSelf = weakSelf;
+                                  strongSelf.indicatorView.progress = (CGFloat)receivedSize / expectedSize;
+                                  
+                              } completed:^(UIImage *image,
+                                            NSError *error,
+                                            SDImageCacheType cacheType,
+                                            NSURL *imageURL) {
+                                  __strong typeof(weakSelf) strongSelf = weakSelf;
+                                  [strongSelf.indicatorView removeFromSuperview];
+                                  
+                                  if (error) {
+                                      [strongSelf addSubview:self.buttonReload];
+                                      return;
+                                  }
+                                  strongSelf.hasLoadedImage = YES;
+                              }];
 }
 #pragma mark - getters and setters 属性
 
@@ -209,12 +158,19 @@
 - (UIScrollView *)scrollView
 {
     if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,
+                                                                    0,
+                                                                    ScreenWidth,
+                                                                    ScreenHeight)];
         [_scrollView setClipsToBounds:YES];
         [_scrollView setDelegate:self];
         [_scrollView addSubview:self.imageView];
         [_scrollView setShowsHorizontalScrollIndicator:NO];
         [_scrollView setShowsVerticalScrollIndicator:NO];
+        
+        [_scrollView setMinimumZoomScale:STScaleMin];
+        [_scrollView setMaximumZoomScale:STScaleMax];
+        [_scrollView setZoomScale:1.0f animated:YES];
     }
     return _scrollView;
 }
@@ -222,7 +178,10 @@
 - (UIImageView *)imageView
 {
     if (!_imageView) {
-        _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, ScreenWidth, ScreenHeight)];
+        _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0,
+                                                                  0,
+                                                                  ScreenWidth,
+                                                                  ScreenHeight)];
         [_imageView setUserInteractionEnabled:YES];
         [_imageView setContentMode:UIViewContentModeScaleAspectFit];
     }

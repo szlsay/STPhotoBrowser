@@ -81,7 +81,7 @@
     STPhotoBrowserController *browserVc = [[STPhotoBrowserController alloc] init];
     browserVc.sourceImagesContainerView = self.scrollView; // 原图的父控件
     browserVc.countImage = self.arrayImageUrl.count; // 图片总数
-    browserVc.currentIndex = (int)button.tag;
+    browserVc.currentPage = (int)button.tag;
     browserVc.delegate = self;
     [browserVc show];
 }
@@ -99,7 +99,6 @@
                                                                     20,
                                                                     ScreenWidth,
                                                                     ScreenHeight - 20)];
-        [_scrollView setBackgroundColor:[UIColor redColor]];
         [_scrollView setShowsHorizontalScrollIndicator:NO];
         [_scrollView setShowsVerticalScrollIndicator:NO];
     }
@@ -108,13 +107,13 @@
 
 - (NSArray *)arrayImageUrl
 {
-    return @[@"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
-             @"http://img4.duitang.com/uploads/item/201410/03/20141003162643_Jh3f3.jpeg",
+    return @[@"http://img.jj20.com/up/allimg/911/121215132T8/151212132T8-1-lp.jpg",
+             @"http://b.zol-img.com.cn/sjbizhi/images/6/208x312/1396940684766.jpg",
              @"http://b.zol-img.com.cn/sjbizhi/images/6/208x312/1394701139813.jpg",
-             @"http://imgsrc.baidu.com/forum/w%3D580/sign=720765961d950a7b75354ecc3ad0625c/3844cffc1e178a82870e4100f603738da877e8c6.jpg",
+             @"http://img.jj20.com/up/allimg/911/0P315132137/150P3132137-1-lp.jpg",
              @"http://b.zol-img.com.cn/sjbizhi/images/1/208x312/1350915106394.jpg",
              @"http://b.zol-img.com.cn/sjbizhi/images/8/208x312/1427966117121.jpg",
-             @"http://b.zol-img.com.cn/sjbizhi/images/9/208x312/1452756616460.jpg",
+             @"http://img.jj20.com/up/allimg/811/052515103222/150525103222-1-lp.jpg",
              @"http://b.zol-img.com.cn/sjbizhi/images/8/208x312/1435742799400.jpg",
              @"http://imga1.pic21.com/bizhi/131016/02507/s11.jpg"];
 }

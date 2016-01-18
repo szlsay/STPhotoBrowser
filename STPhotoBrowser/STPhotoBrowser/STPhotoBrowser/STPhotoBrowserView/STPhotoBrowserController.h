@@ -22,7 +22,7 @@
 /** 1.原图片的容器，即图片来源的父视图 */
 @property ( nonatomic, weak, nullable)UIView *sourceImagesContainerView;
 /** 2.当前的标签 */
-@property (nonatomic, assign)NSInteger currentIndex;
+@property (nonatomic, assign)NSInteger currentPage;
 /** 3.图片的总数目 */
 @property (nonatomic, assign)NSInteger countImage;
 
