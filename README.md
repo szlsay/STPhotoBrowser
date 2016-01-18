@@ -10,3 +10,4 @@
 ### 3.添加保存效果，高仿新浪微博保存动画
 ![image](https://github.com/STShenZhaoliang/STPhotoBrowser/blob/master/Picture/show3.gif)
 ### 4.预加载图片，若没有加载成功，现在重载按钮
+![image](https://github.com/STShenZhaoliang/STPhotoBrowser/blob/master/Picture/show4.gif)
