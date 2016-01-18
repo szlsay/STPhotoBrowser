@@ -16,6 +16,8 @@
 @property (nonatomic, strong, nullable)NSArray *arrayImageUrl; //
 
 @property (nonatomic, strong, nullable)UIScrollView *scrollView; //
+
+@property (nonatomic, strong, nullable)NSMutableArray *arrayButton; //
 @end
 
 @implementation ViewController
@@ -41,14 +43,17 @@
                                                                      buttonH)];
         button.imageView.contentMode = UIViewContentModeScaleAspectFill;
         button.clipsToBounds = YES;
+        [button setBackgroundColor:[UIColor redColor]];
         [button sd_setImageWithURL:[NSURL URLWithString:imageUrl]
                           forState:UIControlStateNormal
                   placeholderImage:[UIImage imageNamed:@"placeholderImage"]];
+        
         [button setTag:idx];
         [button addTarget:self
                    action:@selector(buttonClick:)
          forControlEvents:UIControlEventTouchUpInside];
         [self.scrollView addSubview:button];
+        [self.arrayButton addObject:button];
     }];
     
     
@@ -56,6 +61,7 @@
                                                (self.arrayImageUrl.count / 3 + 1)* (buttonH +
                                                                                     STMarginSmall))];
 }
+
 
 #pragma mark - Delegate 视图委托
 
@@ -89,7 +95,15 @@
 #pragma mark - private methods 私有方法
 
 
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
 
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
 #pragma mark - getters and setters 属性
 
 - (UIScrollView *)scrollView
@@ -118,5 +132,11 @@
              @"http://imga1.pic21.com/bizhi/131016/02507/s11.jpg"];
 }
 
-
+- (NSMutableArray *)arrayButton
+{
+    if (!_arrayButton) {
+        _arrayButton = [NSMutableArray array];
+    }
+    return _arrayButton;
+}
 @end

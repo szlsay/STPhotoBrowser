@@ -19,8 +19,10 @@
 @property (nonatomic, assign)BOOL beginLoadingImage;
 /** 5.单击回调 */
 @property (nonatomic, copy) void (^ _Nonnull singleTapBlock)(UITapGestureRecognizer * _Nonnull recognizer);
+/** 6.是否已经载入图片 */
+@property (nonatomic, assign, getter=isLoadedImage)BOOL  hasLoadedImage;
 /**
- *  6.设置图片
+ *  7.设置图片
  *
  *  @param url              <#url description#>
  *  @param placeholderImage <#placeholderImage description#>

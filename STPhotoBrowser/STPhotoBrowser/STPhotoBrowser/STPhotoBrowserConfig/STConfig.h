@@ -9,11 +9,10 @@
 #ifndef STConfig_h
 #define STConfig_h
 
-#import "STColor.h"
 #import "STConst.h"
 #import "STUI.h"
 
 #import "UIView+ST.h"
-#import "NSObject+ST.h"
+
 
 #endif /* STConfig_h */

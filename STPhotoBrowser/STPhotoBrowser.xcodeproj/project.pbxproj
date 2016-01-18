@@ -8,14 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		7786D7EF1C4B324000CF9139 /* STAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7786D7EE1C4B324000CF9139 /* STAlertView.m */; };
-		7786D7F21C4B33B500CF9139 /* NSObject+ST.m in Sources */ = {isa = PBXBuildFile; fileRef = 7786D7F11C4B33B500CF9139 /* NSObject+ST.m */; };
 		779EAA3C1C47FABE001F3800 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA3B1C47FABE001F3800 /* main.m */; };
 		779EAA3F1C47FABE001F3800 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA3E1C47FABE001F3800 /* AppDelegate.m */; };
 		779EAA421C47FABE001F3800 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA411C47FABE001F3800 /* ViewController.m */; };
 		779EAA451C47FABE001F3800 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 779EAA431C47FABE001F3800 /* Main.storyboard */; };
 		779EAA471C47FABE001F3800 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 779EAA461C47FABE001F3800 /* Assets.xcassets */; };
 		779EAA4A1C47FABE001F3800 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 779EAA481C47FABE001F3800 /* LaunchScreen.storyboard */; };
-		779EAA561C47FDCC001F3800 /* STColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA551C47FDCC001F3800 /* STColor.m */; };
 		779EAA591C47FE0C001F3800 /* STConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA581C47FE0C001F3800 /* STConst.m */; };
 		779EAA5C1C47FE32001F3800 /* STUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA5B1C47FE32001F3800 /* STUI.m */; };
 		779EAA5F1C480136001F3800 /* STIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA5E1C480136001F3800 /* STIndicatorView.m */; };
@@ -30,8 +28,6 @@
 		72FB5A1F2E03D14493C26929 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7786D7ED1C4B324000CF9139 /* STAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAlertView.h; sourceTree = "<group>"; };
 		7786D7EE1C4B324000CF9139 /* STAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAlertView.m; sourceTree = "<group>"; };
-		7786D7F01C4B33B500CF9139 /* NSObject+ST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+ST.h"; sourceTree = "<group>"; };
-		7786D7F11C4B33B500CF9139 /* NSObject+ST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ST.m"; sourceTree = "<group>"; };
 		779EAA371C47FABE001F3800 /* STPhotoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STPhotoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		779EAA3B1C47FABE001F3800 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		779EAA3D1C47FABE001F3800 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -42,8 +38,6 @@
 		779EAA461C47FABE001F3800 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		779EAA491C47FABE001F3800 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		779EAA4B1C47FABE001F3800 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		779EAA541C47FDCC001F3800 /* STColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STColor.h; sourceTree = "<group>"; };
-		779EAA551C47FDCC001F3800 /* STColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STColor.m; sourceTree = "<group>"; };
 		779EAA571C47FE0C001F3800 /* STConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STConst.h; sourceTree = "<group>"; };
 		779EAA581C47FE0C001F3800 /* STConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STConst.m; sourceTree = "<group>"; };
 		779EAA5A1C47FE32001F3800 /* STUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STUI.h; sourceTree = "<group>"; };
@@ -137,16 +131,12 @@
 			isa = PBXGroup;
 			children = (
 				779EAA601C4801AD001F3800 /* STConfig.h */,
-				779EAA541C47FDCC001F3800 /* STColor.h */,
-				779EAA551C47FDCC001F3800 /* STColor.m */,
 				779EAA571C47FE0C001F3800 /* STConst.h */,
 				779EAA581C47FE0C001F3800 /* STConst.m */,
 				779EAA5A1C47FE32001F3800 /* STUI.h */,
 				779EAA5B1C47FE32001F3800 /* STUI.m */,
 				779EAA611C480343001F3800 /* UIView+ST.h */,
 				779EAA621C480343001F3800 /* UIView+ST.m */,
-				7786D7F01C4B33B500CF9139 /* NSObject+ST.h */,
-				7786D7F11C4B33B500CF9139 /* NSObject+ST.m */,
 			);
 			name = STPhotoBrowserConfig;
 			path = STPhotoBrowser/STPhotoBrowserConfig;
@@ -299,8 +289,6 @@
 				779EAA5C1C47FE32001F3800 /* STUI.m in Sources */,
 				779EAA631C480343001F3800 /* UIView+ST.m in Sources */,
 				779EAA3F1C47FABE001F3800 /* AppDelegate.m in Sources */,
-				7786D7F21C4B33B500CF9139 /* NSObject+ST.m in Sources */,
-				779EAA561C47FDCC001F3800 /* STColor.m in Sources */,
 				779EAA3C1C47FABE001F3800 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

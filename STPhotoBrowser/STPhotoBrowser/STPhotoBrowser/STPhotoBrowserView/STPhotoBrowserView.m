@@ -12,15 +12,19 @@
 #import <UIImageView+WebCache.h>
 
 @interface STPhotoBrowserView()<UIScrollViewDelegate>
+/** 1.下载时候的指示器 */
+@property (nonatomic, strong, nullable)STIndicatorView  *indicatorView;
+/** 2.重新载入按钮 */
+@property (nonatomic, strong, nullable)UIButton         *buttonReload;
+/** 3.占位图 */
+@property (nonatomic, strong, nullable)UIImage          *placeHolderImage;
+/** 4.单击手势 */
+@property (nonatomic, strong, nullable)UITapGestureRecognizer  *tapSingle;
+/** 5.双击手势 */
+@property (nonatomic, strong, nullable)UITapGestureRecognizer  *tapDouble;
+/** 6.图片的地址 */
+@property (nonatomic, strong, nullable)NSURL    *urlImage;
 
-@property (nonatomic, strong, nullable)STIndicatorView *indicatorView; //
-
-@property (nonatomic, strong, nullable)UIButton *buttonReload; //
-@property (nonatomic, strong, nullable)UIImage *placeHolderImage; //
-@property (nonatomic, strong, nullable)UITapGestureRecognizer *tapSingle;
-@property (nonatomic, strong, nullable)UITapGestureRecognizer *tapDouble;
-@property (nonatomic, strong, nullable)NSURL *urlImage; //
-@property (nonatomic, assign)BOOL hasLoadedImage; //
 @end
 
 @implementation STPhotoBrowserView
@@ -42,11 +46,13 @@
 {
     [super layoutSubviews];
     
-    self.scrollView.frame = self.bounds;
+    self.scrollView.frame     = self.bounds;
     self.indicatorView.center = self.scrollView.center;
-    self.buttonReload.center = self.scrollView.center;
-    self.imageView.center = self.scrollView.center;
+    self.buttonReload.center  = self.scrollView.center;
+    self.imageView.frame      = self.scrollView.bounds;
 }
+
+
 
 #pragma mark - --- Delegate 视图委托 ---
 
@@ -158,10 +164,7 @@
 - (UIScrollView *)scrollView
 {
     if (!_scrollView) {
-        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,
-                                                                    0,
-                                                                    ScreenWidth,
-                                                                    ScreenHeight)];
+        _scrollView = [[UIScrollView alloc]init];
         [_scrollView setClipsToBounds:YES];
         [_scrollView setDelegate:self];
         [_scrollView addSubview:self.imageView];
@@ -178,10 +181,7 @@
 - (UIImageView *)imageView
 {
     if (!_imageView) {
-        _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0,
-                                                                  0,
-                                                                  ScreenWidth,
-                                                                  ScreenHeight)];
+        _imageView = [[UIImageView alloc]init];
         [_imageView setUserInteractionEnabled:YES];
         [_imageView setContentMode:UIViewContentModeScaleAspectFit];
     }
@@ -193,7 +193,6 @@
     if (!_indicatorView) {
         _indicatorView = [[STIndicatorView alloc]init];
         [_indicatorView setViewMode:STIndicatorViewModePieDiagram];
-        [_indicatorView setCenter:CGPointMake(ScreenWidth/2, ScreenHeight/2)];
     }
     return _indicatorView;
 }
@@ -202,7 +201,6 @@
 {
     if (!_buttonReload) {
         _buttonReload = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 200, 40)];
-        [_buttonReload setCenter:CGPointMake(ScreenWidth/2, ScreenHeight/2)];
         [_buttonReload setBackgroundColor:RGB(240, 170, 170)];
         [_buttonReload setClipsToBounds:YES];
         [_buttonReload setTitle:@"原图加载失败，点击重新加载" forState:UIControlStateNormal];

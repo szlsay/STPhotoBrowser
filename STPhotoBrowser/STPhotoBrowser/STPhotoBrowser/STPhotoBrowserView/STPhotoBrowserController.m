@@ -22,7 +22,7 @@
 /** 4.保存时候的指示器 */
 @property (nonatomic, strong, nullable)UIActivityIndicatorView *indicatorView;
 /** 5.图片视图数组 */
-@property (nonatomic, strong, nullable)NSMutableArray *arrayImage;
+@property (nonatomic, strong, nullable)NSMutableArray *arrayPhotoBrowserView;
 
 @property (nonatomic,assign) BOOL hasShowedPhotoBrowser;
 
@@ -43,11 +43,10 @@
     self.hasShowedPhotoBrowser = NO;
     
     // 2.添加图片
-    [self.arrayImage removeAllObjects];
+    [self.arrayPhotoBrowserView removeAllObjects];
     for (int i = 0; i < self.countImage; i++) {
         STPhotoBrowserView *photoBrowserView = [STPhotoBrowserView new];
-        [self.arrayImage addObject:photoBrowserView.imageView];
-        //        view.imageView.tag = i;
+        [self.arrayPhotoBrowserView addObject:photoBrowserView];
         
         //处理单击
         __weak __typeof(self)weakSelf = self;
@@ -100,15 +99,25 @@
     NSInteger pageCurrent = scrollView.contentOffset.x / scrollView.width + 0.5;
     
     // 2.设置标题
-    self.labelIndex.text = [NSString stringWithFormat:@"%d/%ld", pageCurrent + 1, (long)self.countImage];
+    self.labelIndex.text = [NSString stringWithFormat:@"%ld/%ld", (long)(pageCurrent + 1), (long)self.countImage];
     
     // 3.还原其他图片的尺寸
     if (pageCurrent != self.currentPage) {
         self.currentPage = pageCurrent;
         for (STPhotoBrowserView *photoBrowserView in scrollView.subviews) {
-            if (photoBrowserView.imageView != self.arrayImage[self.currentPage]) {
+            if (photoBrowserView != self.arrayPhotoBrowserView[self.currentPage]) {
                 photoBrowserView.scrollView.zoomScale = 1.0;
                 photoBrowserView.imageView.center = photoBrowserView.scrollView.center;
+            }else {
+                if (photoBrowserView.isLoadedImage) {
+                    [self.buttonSave setTitleColor:[UIColor whiteColor]
+                                          forState:UIControlStateNormal];
+                    [self.buttonSave setEnabled:YES];
+                }else {
+                    [self.buttonSave setTitleColor:[UIColor redColor]
+                                          forState:UIControlStateNormal];
+                    [self.buttonSave setEnabled:NO];
+                }
             }
         }
     }
@@ -129,15 +138,8 @@
 #pragma mark - 1.保存图片
 - (void)saveImage:(UIButton *)button
 {
-    [self.buttonSave setEnabled:NO];
-    [NSTimer scheduledTimerWithTimeInterval:1
-                                     target:self
-                                   selector:@selector(changeButtonStatus)
-                                   userInfo:nil
-                                    repeats:NO];
-    
     STPhotoBrowserView *currentView = self.scrollView.subviews[self.currentPage];
-    
+
     UIImageWriteToSavedPhotosAlbum(currentView.imageView.image,
                                    self,
                                    @selector(savedPhotosAlbumWithImage:didFinishSavingWithError:contextInfo:),
@@ -458,12 +460,12 @@
 }
 
 #pragma mark - 5.图片视图数组
-- (NSMutableArray *)arrayImage
+- (NSMutableArray *)arrayPhotoBrowserView
 {
-    if (!_arrayImage) {
-        _arrayImage = [NSMutableArray array];
+    if (!_arrayPhotoBrowserView) {
+        _arrayPhotoBrowserView = [NSMutableArray array];
     }
-    return _arrayImage;
+    return _arrayPhotoBrowserView;
 }
 
 @end
