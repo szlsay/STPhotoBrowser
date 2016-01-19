@@ -114,6 +114,19 @@
     return self.imageView;
 }
 
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView {
+    UIView *subView = self.imageView;
+    
+    CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?
+    (scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
+    
+    CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?
+    (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
+    
+    subView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
+                                 scrollView.contentSize.height * 0.5 + offsetY);
+}
+
 #pragma mark - 2.双击的放大时，获取图片在中间的位置
 - (CGPoint)centerOfScrollViewContent:(UIScrollView *)scrollView
 {
@@ -146,12 +159,12 @@
     
     // 2.放大和缩小
     CGPoint touchPoint = [recognizer locationInView:self];
-    if (self.scrollView.zoomScale <= 1.0) { // 1.放大
-        [self.scrollView zoomToRect:CGRectMake(touchPoint.x, touchPoint.y, 0, 0)
-                           animated:YES];
-    } else {                                // 2.还原
-        [self.scrollView setZoomScale:1.0
-                             animated:YES];
+    if (self.scrollView.zoomScale <= 1.0) {
+        CGFloat scaleX = touchPoint.x + self.scrollView.contentOffset.x;//需要放大的图片的X点
+        CGFloat sacleY = touchPoint.y + self.scrollView.contentOffset.y;//需要放大的图片的Y点
+        [self.scrollView zoomToRect:CGRectMake(scaleX, sacleY, 10, 10) animated:YES];
+    } else {
+        [self.scrollView setZoomScale:1.0 animated:YES]; //还原
     }
 }
 
