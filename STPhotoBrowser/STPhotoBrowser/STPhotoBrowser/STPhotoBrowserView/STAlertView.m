@@ -63,11 +63,8 @@ static CGFloat const HAlert = 112;
                                  options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
                                      [self.layer setOpacity:0.0];
                                  } completion:^(BOOL finished) {
+                                     [self removeFromSuperview];
                                  }];
-    [self performSelector:@selector(removeFromSuperview)
-                         withObject:nil
-                         afterDelay:1];
-    
 }
 
 - (void)setStyle:(STAlertViewStyle)style
