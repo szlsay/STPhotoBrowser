@@ -13,13 +13,12 @@ static CGFloat const WidthIndicator = 42;
 
 @implementation STIndicatorView
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame mode:(STIndicatorViewMode)mode {
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = RGBA(255, 255, 255, 0.7);
         self.clipsToBounds = YES;
-        self.viewMode = STIndicatorViewModeLoopDiagram;
+        self.viewMode = mode;
     }
     return self;
 }
