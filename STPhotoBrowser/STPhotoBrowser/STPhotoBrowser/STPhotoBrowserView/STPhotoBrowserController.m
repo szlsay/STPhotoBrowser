@@ -285,12 +285,6 @@
                      } completion:^(BOOL finished) {
                          [tempImageView removeFromSuperview];
                      }];
-//    [UIView animateWithDuration:0.3 animations:^{
-//        tempImageView.frame = targetTemp;
-//        
-//    } completion:^(BOOL finished) {
-//        [tempImageView removeFromSuperview];
-//    }];
 }
 #pragma mark - --- private methods 私有方法 ---
 

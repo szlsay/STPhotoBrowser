@@ -25,16 +25,13 @@ static CGFloat const HAlert = 112;
 {
     if (self = [super init]) {
         self.frame = CGRectMake(0, 0, WAlert, HAlert);
-         [self setupUI];
-        
-      
+        [self setupUI];
     }
     return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
-    
     frame = CGRectMake(0, 0, WAlert, HAlert);
     if (self = [super initWithFrame:frame]) {
         [self setupUI];
@@ -60,14 +57,12 @@ static CGFloat const HAlert = 112;
     [[UIApplication sharedApplication].keyWindow bringSubviewToFront:self];
     [UIView animateKeyframesWithDuration:0.5
                                    delay:0.5
-                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic animations:^{
+                                 options:UIViewKeyframeAnimationOptionCalculationModeCubic
+                              animations:^{
                                      [self.layer setOpacity:0.0];
                                  } completion:^(BOOL finished) {
+                                     [self removeFromSuperview];
                                  }];
-    [self performSelector:@selector(removeFromSuperview)
-                         withObject:nil
-                         afterDelay:1];
-    
 }
 
 - (void)setStyle:(STAlertViewStyle)style
@@ -82,7 +77,6 @@ static CGFloat const HAlert = 112;
         [self.imageView setImage:[UIImage imageNamed:@"alert_success_icon"]];
     }
 }
-
 
 - (UILabel *)labelTitle
 {
