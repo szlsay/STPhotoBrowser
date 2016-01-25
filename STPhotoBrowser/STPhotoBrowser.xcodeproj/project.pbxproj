@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7786D7EF1C4B324000CF9139 /* STAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7786D7EE1C4B324000CF9139 /* STAlertView.m */; };
+		779C11FD1C567A5C00D8B379 /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779C11FC1C567A5C00D8B379 /* TableViewController.m */; };
 		779EAA3C1C47FABE001F3800 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA3B1C47FABE001F3800 /* main.m */; };
 		779EAA3F1C47FABE001F3800 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA3E1C47FABE001F3800 /* AppDelegate.m */; };
 		779EAA421C47FABE001F3800 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 779EAA411C47FABE001F3800 /* ViewController.m */; };
@@ -28,6 +29,8 @@
 		72FB5A1F2E03D14493C26929 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		7786D7ED1C4B324000CF9139 /* STAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STAlertView.h; sourceTree = "<group>"; };
 		7786D7EE1C4B324000CF9139 /* STAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STAlertView.m; sourceTree = "<group>"; };
+		779C11FB1C567A5C00D8B379 /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		779C11FC1C567A5C00D8B379 /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		779EAA371C47FABE001F3800 /* STPhotoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STPhotoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		779EAA3B1C47FABE001F3800 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		779EAA3D1C47FABE001F3800 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -110,6 +113,8 @@
 				779EAA3E1C47FABE001F3800 /* AppDelegate.m */,
 				779EAA401C47FABE001F3800 /* ViewController.h */,
 				779EAA411C47FABE001F3800 /* ViewController.m */,
+				779C11FB1C567A5C00D8B379 /* TableViewController.h */,
+				779C11FC1C567A5C00D8B379 /* TableViewController.m */,
 				779EAA431C47FABE001F3800 /* Main.storyboard */,
 				779EAA461C47FABE001F3800 /* Assets.xcassets */,
 				779EAA481C47FABE001F3800 /* LaunchScreen.storyboard */,
@@ -280,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				779C11FD1C567A5C00D8B379 /* TableViewController.m in Sources */,
 				779EAA591C47FE0C001F3800 /* STConst.m in Sources */,
 				7786D7EF1C4B324000CF9139 /* STAlertView.m in Sources */,
 				77AE902E1C487FDB009C4C32 /* STPhotoBrowserController.m in Sources */,

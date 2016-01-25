@@ -62,8 +62,15 @@
     // 3.添加上方标题
     if (self.countImage > 1) {
         self.labelIndex.text = [NSString stringWithFormat:@"1/%ld", (long)self.countImage];
+        [self.labelIndex setHidden:NO];
+        [self.view addSubview:self.labelIndex];
+    } else {
+        [self.labelIndex setHidden:YES];
     }
-    [self.view addSubview:self.labelIndex];
+    
+    
+    
+    
     // 4.添加保存按钮
     [self.view addSubview:self.buttonSave];
     
