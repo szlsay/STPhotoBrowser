@@ -13,7 +13,10 @@
 ![image](https://github.com/STShenZhaoliang/STPhotoBrowser/blob/master/Picture/show4.gif)
 ### 5.支持横竖屏
 ![image](https://github.com/STShenZhaoliang/STPhotoBrowser/blob/master/Picture/show5.gif)
-### 6.点击保存按钮事件中存在的问题及解决方法
+
+### 6.在UITableView的案例(UICollectionView的案例可依据它来编写)
+![image](https://github.com/STShenZhaoliang/STPhotoBrowser/blob/master/Picture/show7.gif)
+### 7.点击保存按钮事件中存在的问题及解决方法
 ![image](https://github.com/STShenZhaoliang/STPhotoBrowser/blob/master/Picture/show6.gif)
 #### 问题1.当点击保存按钮之后，执行保存的操作和提示动画效果，此时按钮是不可以点击的，但实际情况是可以点击的
 #### 解决方法：使用RAC，当点击保存按钮之后，按钮不可使用，在动画完成后，按钮可以使用（或是显示“已保存”，按钮不可使用）
