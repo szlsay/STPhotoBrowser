@@ -7,7 +7,8 @@
 //
 
 #import "STAlertView.h"
-#import "STConfig.h"
+#import "STPhotoBrowserUI.h"
+#import "UIView+STPhotoBrowser.h"
 
 static CGFloat const WAlert = 154;
 static CGFloat const HAlert = 112;
@@ -82,9 +83,9 @@ static CGFloat const HAlert = 112;
 {
     if (!_labelTitle) {
         CGFloat titleX = 0;
-        CGFloat titleY = self.height/2 - STMarginSmall;
-        CGFloat titleW = self.width;
-        CGFloat titleH = self.height/2;
+        CGFloat titleY = self.st_height/2 - STMarginSmall;
+        CGFloat titleW = self.st_width;
+        CGFloat titleH = self.st_height/2;
         _labelTitle = [[UILabel alloc]initWithFrame:CGRectMake(titleX, titleY, titleW, titleH)];
         [_labelTitle setTextColor:[UIColor whiteColor]];
         [_labelTitle setTextAlignment:NSTextAlignmentCenter];
@@ -98,8 +99,8 @@ static CGFloat const HAlert = 112;
     if (!_imageView) {
         CGFloat imageW = 40;
         CGFloat imageH = 40;
-        CGFloat imageCenterX = self.width / 2;
-        CGFloat imageCenterY = (self.height - imageH) / 2 + STMargin;
+        CGFloat imageCenterX = self.st_width / 2;
+        CGFloat imageCenterY = (self.st_height - imageH) / 2 + STMargin;
         _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, imageW, imageH)];
         [_imageView setCenter:CGPointMake(imageCenterX, imageCenterY)];
     }

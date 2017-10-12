@@ -6,7 +6,7 @@
 //  Copyright © 2016年 ST. All rights reserved.
 //
 
-#import "STUI.h"
+#import "STPhotoBrowserUI.h"
 
 /** 1.统一的较小间距 5*/
 CGFloat const STMarginSmall = 5;

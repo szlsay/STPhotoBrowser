@@ -8,11 +8,9 @@
 
 #import "STPhotoBrowserView.h"
 #import "STIndicatorView.h"
-#import "STConfig.h"
+#import "STPhotoBrowserUI.h"
+#import "UIView+STPhotoBrowser.h"
 #import <UIImageView+WebCache.h>
-
-#define RGBA(r, g, b, a) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]
-#define RGB(r, g, b) RGBA(r, g, b, 1.0f)
 @interface STPhotoBrowserView()<UIScrollViewDelegate>
 /** 1.下载时候的指示器 */
 @property (nonatomic, strong, nullable)STIndicatorView  *indicatorView;
@@ -132,10 +130,10 @@
 #pragma mark - 2.双击的放大时，获取图片在中间的位置
 - (CGPoint)centerOfScrollViewContent:(UIScrollView *)scrollView
 {
-    CGFloat offsetX = (scrollView.width > scrollView.contentSize.width)?
-    (scrollView.width - scrollView.contentSize.width) * 0.5 : 0.0;
-    CGFloat offsetY = (scrollView.height > scrollView.contentSize.height)?
-    (scrollView.height - scrollView.contentSize.height) * 0.5 : 0.0;
+    CGFloat offsetX = (scrollView.st_width > scrollView.contentSize.width)?
+    (scrollView.st_width - scrollView.contentSize.width) * 0.5 : 0.0;
+    CGFloat offsetY = (scrollView.st_height > scrollView.contentSize.height)?
+    (scrollView.st_height - scrollView.contentSize.height) * 0.5 : 0.0;
     CGPoint actualCenter = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
                                        scrollView.contentSize.height * 0.5 + offsetY);
     return actualCenter;
@@ -263,7 +261,7 @@
 {
     if (!_buttonReload) {
         _buttonReload = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 200, 40)];
-        [_buttonReload setBackgroundColor:RGB(240, 170, 170)];
+        [_buttonReload setBackgroundColor:[UIColor colorWithRed:240.0/255 green:170.0/255 blue:170.0/255 alpha:1]];
         [_buttonReload setClipsToBounds:YES];
         [_buttonReload setTitle:@"原图加载失败，点击重新加载" forState:UIControlStateNormal];
         [_buttonReload setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

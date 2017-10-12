@@ -8,7 +8,8 @@
 
 #import "STPhotoBrowserController.h"
 #import "STPhotoBrowserView.h"
-#import "STConfig.h"
+#import "UIView+STPhotoBrowser.h"
+#import "STPhotoBrowserUI.h"
 #import "STIndicatorView.h"
 #import "STAlertView.h"
 #define ScreenWidth  CGRectGetWidth([UIScreen mainScreen].bounds)
@@ -104,7 +105,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     // 1.获取当前页数
-    NSInteger pageCurrent = scrollView.contentOffset.x / scrollView.width + 0.5;
+    NSInteger pageCurrent = scrollView.contentOffset.x / scrollView.st_width + 0.5;
     
     if (pageCurrent ==  self.countImage || pageCurrent < 0) {
         return;
@@ -120,13 +121,13 @@
             if (photoBrowserView != self.arrayPhotoBrowserView[self.currentPage]) {
                 photoBrowserView.scrollView.zoomScale = 1.0;
                 if (ScreenWidth > ScreenHeight) {
-                    photoBrowserView.imageView.origin = CGPointMake(0, 0);
+                    photoBrowserView.imageView.st_origin = CGPointMake(0, 0);
                 }else {
                 photoBrowserView.imageView.center = photoBrowserView.scrollView.center;
                 } 
             }else {
                 if (ScreenWidth > ScreenHeight) {
-                    photoBrowserView.imageView.origin = CGPointMake(0, 0);
+                    photoBrowserView.imageView.st_origin = CGPointMake(0, 0);
                 }else {
                     photoBrowserView.imageView.center = photoBrowserView.scrollView.center;
                 }
@@ -346,9 +347,9 @@
         
     }];
     
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.subviews.count * self.scrollView.width,
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.subviews.count * self.scrollView.st_width,
                                              ScreenHeight);
-    self.scrollView.contentOffset = CGPointMake(self.currentPage * self.scrollView.width, 0);
+    self.scrollView.contentOffset = CGPointMake(self.currentPage * self.scrollView.st_width, 0);
     
     
     CGFloat indexW = 66;

@@ -8,7 +8,8 @@
 
 #import "TableViewController.h"
 #import "STPhotoBrowserController.h"
-#import "STConfig.h"
+#import "UIView+STPhotoBrowser.h"
+#import "STPhotoBrowserUI.h"
 #import <UIButton+WebCache.h>
 @class TestCell;
 @protocol TestCellDelegate <NSObject>
