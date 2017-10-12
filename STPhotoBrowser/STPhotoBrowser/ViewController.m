@@ -30,7 +30,7 @@
     [self.view addSubview:self.scrollView];
     
     
-    __block CGFloat buttonW = (ScreenWidth - STMargin * 3)/3;
+    __block CGFloat buttonW = (CGRectGetWidth(self.view.frame) - STMargin * 3)/3;
     __block CGFloat buttonH = buttonW;
     __block CGFloat buttonX = 0;
     __block CGFloat buttonY = 0;
@@ -56,7 +56,7 @@
     }];
     
     
-    [self.scrollView setContentSize:CGSizeMake(ScreenWidth,
+    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width,
                                                (self.arrayImageUrl.count / 3 + 1)* (buttonH +
                                                                                     STMarginSmall))];
 }
@@ -110,8 +110,8 @@
     if (!_scrollView) {
         _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,
                                                                     20,
-                                                                    ScreenWidth,
-                                                                    ScreenHeight - 20)];
+                                                                    CGRectGetWidth(self.view.frame),
+                                                                    CGRectGetHeight(self.view.frame) - 20)];
         [_scrollView setShowsHorizontalScrollIndicator:NO];
         [_scrollView setShowsVerticalScrollIndicator:NO];
     }

@@ -11,6 +11,8 @@
 #import "STConfig.h"
 #import <UIImageView+WebCache.h>
 
+#define RGBA(r, g, b, a) [UIColor colorWithRed:r/255.0f green:g/255.0f blue:b/255.0f alpha:a]
+#define RGB(r, g, b) RGBA(r, g, b, 1.0f)
 @interface STPhotoBrowserView()<UIScrollViewDelegate>
 /** 1.下载时候的指示器 */
 @property (nonatomic, strong, nullable)STIndicatorView  *indicatorView;

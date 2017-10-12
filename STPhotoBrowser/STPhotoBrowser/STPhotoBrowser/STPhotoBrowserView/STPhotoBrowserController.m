@@ -11,7 +11,8 @@
 #import "STConfig.h"
 #import "STIndicatorView.h"
 #import "STAlertView.h"
-
+#define ScreenWidth  CGRectGetWidth([UIScreen mainScreen].bounds)
+#define ScreenHeight CGRectGetHeight([UIScreen mainScreen].bounds)
 @interface STPhotoBrowserController ()<UIScrollViewDelegate>
 /** 1.内部容器视图 */
 @property (nonatomic, strong, nullable)UIScrollView *scrollView;
@@ -420,14 +421,14 @@
 {
     if (!_labelIndex) {
         _labelIndex = [[UILabel alloc]init];
-        [_labelIndex setBackgroundColor:RGBA(0, 0, 0, 50.0/255)];
+        [_labelIndex setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:50.0/255]];
         [_labelIndex setTextAlignment:NSTextAlignmentCenter];
         [_labelIndex setTextColor:[UIColor whiteColor]];
         [_labelIndex setFont:[UIFont boldSystemFontOfSize:17]];
         
         [_labelIndex setClipsToBounds:YES];
         [_labelIndex setShadowOffset:CGSizeMake(0, -0.5)];
-        [_labelIndex setShadowColor:RGBA(0, 0, 0, 110.0/255)];
+        [_labelIndex setShadowColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:110.0/255]];
     }
     return _labelIndex;
 }
@@ -437,7 +438,7 @@
 {
     if (!_buttonSave) {
         _buttonSave = [[UIButton alloc]init];
-        [_buttonSave setBackgroundColor:RGBA(0, 0, 0, 50.0/255)];
+        [_buttonSave setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:50.0/255]];
         [_buttonSave setTitle:@"保存" forState:UIControlStateNormal];
         [_buttonSave setTitleColor:[UIColor whiteColor]
                           forState:UIControlStateNormal];
@@ -446,7 +447,7 @@
         [_buttonSave setClipsToBounds:YES];
         [_buttonSave.layer setCornerRadius:2];
         [_buttonSave.layer setBorderWidth:0.5];
-        [_buttonSave.layer setBorderColor:RGBA(255, 255, 255, 60.0/255).CGColor];
+        [_buttonSave.layer setBorderColor:[UIColor colorWithRed:1 green:1 blue:1 alpha:60.0/255].CGColor];
         [_buttonSave addTarget:self
                         action:@selector(saveImage:)
               forControlEvents:UIControlEventTouchUpInside];

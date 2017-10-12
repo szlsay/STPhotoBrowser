@@ -17,7 +17,7 @@ static CGFloat const WidthIndicator = 42;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = RGBA(255, 255, 255, 0.7);
+        self.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.7];
         self.clipsToBounds = YES;
         self.viewMode = STIndicatorViewModeLoopDiagram;
     }

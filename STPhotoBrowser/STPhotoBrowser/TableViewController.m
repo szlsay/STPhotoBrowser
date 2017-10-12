@@ -49,7 +49,7 @@
     [self.arrayButton removeAllObjects];
     
     [arrayImageUrl enumerateObjectsUsingBlock:^(NSString *imageUrl, NSUInteger idx, BOOL * _Nonnull stop) {
-        CGFloat buttonW = (ScreenWidth - STMargin * 3)/3;
+        CGFloat buttonW = (CGRectGetWidth(self.contentView.frame) - STMargin * 3)/3;
         CGFloat buttonH = buttonW;
         CGFloat buttonX = STMargin + (idx % 3) * (buttonW + STMarginSmall);
         CGFloat buttonY = (idx / 3) * (buttonH + STMarginSmall) + STMarginSmall;
@@ -143,11 +143,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat buttonH = (ScreenWidth - STMargin * 3)/3;
+    CGFloat buttonH = (CGRectGetWidth(self.view.frame) - STMargin * 3)/3;
     NSString *key = [NSString stringWithFormat:@"%ld", (long)indexPath.section];
     NSArray *array = self.dictionaryImage[key];
     return  ((array.count - 1) / 3 + 1) * (buttonH) + STMargin;
-//    return (array.count / 3 + 1);
 }
 
 - (void)testCell:(TestCell *)cell currentItem:(NSInteger)currentItem
@@ -189,7 +188,7 @@
         [_tableView setDelegate:self];
         [_tableView setDataSource:self];
         [_tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-        [_tableView setBackgroundColor:RGB(243, 242, 240)];
+        [_tableView setBackgroundColor:[UIColor colorWithRed:243.0/255 green:242.0/255 blue:240.0/255 alpha:1]];
         [_tableView registerClass:[TestCell class] forCellReuseIdentifier:@"TestCell"];
     }
     return _tableView;

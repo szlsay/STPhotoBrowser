@@ -41,7 +41,7 @@ static CGFloat const HAlert = 112;
 
 - (void)setupUI
 {
-    [self setBackgroundColor:RGBA(0, 0, 0, 115.0/255)];
+    [self setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:115.0/255]];
     [self setClipsToBounds:YES];
     [self.layer setCornerRadius:2];
     [self.layer setOpacity:1.0];
